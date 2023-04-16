@@ -1,3 +1,7 @@
-print("Hi")
-print("Hello there General Kenobi!")
-print("YODA O NO YODA")
+def main():
+  return
+
+if __name__ == '__main__':
+  main()
+
+
