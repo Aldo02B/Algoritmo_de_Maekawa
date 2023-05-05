@@ -1,32 +1,66 @@
 class proceso:
   def __init__(self, nombre):
-    self.nombre = nombre
+    self._nombre = nombre
     self.estado = "Released"
     self.msg = []
     self.votacion = "False"
     self.grupo_votacion = []
 
+  # Getter para el nombre del proceso
+  @property
+  def nombre(self):
+    return self._nombre
+
   def quiere_entrar_SC(self):
     self.estado = "Wanted"
     self.votacion = "True"
-    self.msg.append(self.nombre)
 
   def esta_adentro_SC(self):
     self.estado = "Held"
+
+  def cambia_votacion_true(self):
     self.votacion = "True"
+
+  def cambia_votacion_false(self):
+    self.votacion = "False"
 
   def salio_SC(self):
     self.estado = "Released"
-    self.votacion = "True"
+    self.votacion = "False"
 
   def agrega_grupo_votacion(self, proceso):
-    self.grupo_votacion.append(proceso.nombre)
+    for process in proceso:
+      self.grupo_votacion.append(process)
+
+  # Función que permite hacer el 1.3 del ejercicio donde cambiamos el valor del proceso
+  # a Held.
+  def puede_entrar(self):
+    for process in self.grupo_votacion:
+      if process.estado == "Released":
+        continue
+      else:
+        return False
+    self.estado = "Held"
+    self.msg.clear()
+    return True
+
+  def recibe_mensaje(self, mensaje):
+    self.msg.append(mensaje)
 
   def saca_primer_mensaje(self):
     self.msg.pop(0)
 
+  def regresa_pivote(self, proceso):
+    self.grupo_votacion.insert(0, proceso)
+
+  def nombres_grupo_votacion(self):
+    nombres = []
+    for process in self.grupo_votacion:
+      nombres.append(process.nombre)
+    return nombres
+
   def __str__(self):
-    return f'Estado = {self.estado}, Cola de mensajes = {self.msg}, Votacion = {self.votacion}'
+    return f'Nombre = {self._nombre}, Estado = {self.estado}, Cola de mensajes = {self.msg}, Votacion = {self.votacion}'
 
 '''
 Otra implementacion es que para no llamar a tantas funciones para cambiar el estado del proceso
