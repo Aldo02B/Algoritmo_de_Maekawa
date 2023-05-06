@@ -1,15 +1,16 @@
-from proceso import *
+from proceso import proceso
 
 def main():
   # LOL
   #Conjuntos de votación
+  print("\nAlgoritmo de Maekawa\n")
   print("Se crean los procesos: P1, P2, P3 y P4")
   p1 = proceso("p1")
   p2 = proceso("p2")
   p3 = proceso("p3")
   p4 = proceso("p4")
   
-  print("Se crean los grupos de votación")
+  print("Se crean los grupos de votación\n")
   v1=[p1, p2, p3]
   print("El grupo 1 está constituido de los procesos: P1, P2 y P3")
   v2=[p2, p1, p4]
@@ -17,7 +18,7 @@ def main():
   v3=[p3, p4, p1]
   print("El grupo 3 está constituido de los procesos: P3, P4 y P1")
   v4=[p4, p3, p2]
-  print("El grupo 4 está constituido de los procesos: P4, P3 y P2")
+  print("El grupo 4 está constituido de los procesos: P4, P3 y P2\n")
 
   p1.agrega_grupo_votacion(v1)
   p2.agrega_grupo_votacion(v2)
@@ -29,37 +30,46 @@ def main():
   # 3 -> Proceso 2 libera
   # 4 -> Proceso 3 libera
 
-  print("\n------------------------------------- Estado 0----------------------------------------------")
+  print("El paso 1 es: Proceso 2 quiere entrar a la sección crítica")
+  print("El paso 2 es: Proceso 3 quiere entrar a la sección crítica")
+  print("El paso 3 es: Proceso 2 libera la sección crítica")
+  print("El paso 4 es: Proceso 3 libera la sección crítica\n")
+
+  print("================================================== ESTADO INICIAL ======================================================")
+  print("Todos los procesos están en estado Released, sus colas de mensajes están vacías y votación en False")
   print(p1)
   print(p2)
   print(p3)
   print(p4)
-  print("\n\n######################################## PASO 1 ###############################################")
-  print("---------------------------------------- P2 QUIERE ENTRAR -------------------------------------")
 
+  print("\n================================================== PASO 1 ==================================================")
+  print("---------------------------------------- P2 QUIERE ENTRAR -------------------------------------")
+  print("P2 manda mensaje a todos en su grupo de votación (P1, P4) de que quiere entrar, cambia su estado a Wanted y su votación a True")
   envia_mensaje_quiero_entrar(p2)
   print(p1)
   print(p2)
   print(p3)
   print(p4)
 
-  
   print("\n---------------------------------------- P2 RECIBE RESPUESTA -------------------------------------")
+  print("Los procesos P1 y P4 contestan a P2 y cambian su votación a True")
   envian_respuesta(p2)
   print(p1)
   print(p2)
   print(p3)
   print(p4)
 
-  print("\n---------------------------------------- P2 PUEDE ENTRAR ?? -------------------------------------")
+  print("\n---------------------------------------- ¿¿ P2 PUEDE ENTRAR ?? -------------------------------------")
+  print("Si P2 recibió mensaje de todos los de su grupo de votación, entonces cambia su estado a Held")
   p2.puede_entrar()
   print(p1)
   print(p2)
   print(p3)
   print(p4)
 
-  print("\n\n######################################## PASO 2 ###############################################")
-  print("---------------------------------------- P3 QUIERE ENTRAR -------------------------------------")
+  print("\n========================================================= PASO 2 =========================================================")
+  print("\n---------------------------------------- P3 QUIERE ENTRAR -------------------------------------")
+  print("P3 manda mensaje a todos en su grupo de votación (P1, P4) de que quiere entrar, cambia su estado a Wanted y su votación a True")
   envia_mensaje_quiero_entrar(p3)
   print(p1)
   print(p2)
@@ -67,21 +77,18 @@ def main():
   print(p4)
 
   print("\n---------------------------------------- P3 RECIBE RESPUESTA  ----------------------------------------")
+  print("P3 espera por mensajes de su grupo de votación, pero su grupo de votación tiene votación en True, por lo tanto encolan el mensaje de P3 hasta que se libere la sección crítica de P2")
   envian_respuesta(p3)
-  print(p1)
-  print(p2)
-  print(p3)
-  print(p4)
-
-  print("\n---------------------------------------- P3 PUEDE ENTRAR ?? -------------------------------------")
   p3.puede_entrar()
   print(p1)
   print(p2)
   print(p3)
   print(p4)
+  print("P3 no tiene permiso para entrar")
 
-  print("\n\n######################################## PASO 3 ###############################################")
-  print("---------------------------------------- P2 SALIÓ -------------------------------------")
+  print("\n=============================================== PASO 3 =============================================================")
+  print("\n---------------------------------------- P2 SALIÓ -------------------------------------")
+  print("P2 salió de la sección crítica, cambia su estado a Released y votación a False")
   p2.salio_SC()
   print(p1)
   print(p2)
@@ -89,29 +96,34 @@ def main():
   print(p4)
 
   print("\n---------------------------------------- P2 ENVIA MENSAJE YA SALÍ -------------------------------------")
+  print("P2 manda mensaje a todos en su grupo de votación (P1, P4) de que ya salió, cambian su votación a False")
   envia_mensaje_sali(p2)
   print(p1)
   print(p2)
   print(p3)
   print(p4)
-
   
   print("\n---------------------------------------- P3 RECIBE RESPUESTA  ----------------------------------------")
+  print("P1 y P4 mandan respuesta a P3, cambiando su votación a True y vaciando su cola de mensajes")
   envian_respuesta(p3)
   print(p1)
   print(p2)
   print(p3)
   print(p4)
 
-  print("\n---------------------------------------- P3 PUEDE ENTRAR ?? ----------------------------------------")
+  print("\n---------------------------------------- ¿¿ P3 PUEDE ENTRAR ?? ----------------------------------------")
+  print("Si P3 recibió mensaje de todos los de su grupo de votación, entonces cambia su estado a Held")
   p3.puede_entrar()
   print(p1)
   print(p2)
   print(p3)
   print(p4)
-
-  print("\n######################################## PASO 4 ###############################################")
-  print("----------------------------------- P3 ENVÍA MENSAJE DE SALIDA -------------------------------------")
+  
+  print("\n======================================================= PASO 4 ======================================================")
+  print("\n----------------------------------- P3 ENVÍA MENSAJE DE SALIDA -------------------------------------")
+  print("P3 salió de la sección crítica, cambia su estado a Released y votación a False")
+  p3.salio_SC()
+  print("P3 manda mensaje a todos en su grupo de votación (P1, P4) de que ya salió, cambian su votación a False")
   envia_mensaje_sali(p3)
   print(p1)
   print(p2)
@@ -144,15 +156,14 @@ def envian_respuesta(proceso):
     else:
       # No envia respuesta, mantiene el mensaje en la cola
       print("Hay un proceso en el recurso compartido")
-      pass
+      proceso.regresa_pivote(pivote)
+      return
   proceso.regresa_pivote(pivote)
   return
 
 def envia_mensaje_sali(proceso):
   for process in proceso.grupo_votacion:
     process.recibe_mensaje(proceso.nombre)
-  proceso.saca_primer_mensaje()
-  pivote = proceso.grupo_votacion.pop(0)
   for process in proceso.grupo_votacion:
     process.msg.pop()
     process.cambia_votacion_false()
@@ -160,8 +171,3 @@ def envia_mensaje_sali(proceso):
 
 if __name__ == '__main__':
   main()
-
-# TODO: Revisar desde Paso 2
-# TODO: P2 no esta cambiando a HELD, revisar funcion puede_entrar()
-# TODO: P3 no debe cambiar a HELD en el primer P3 PUEDE ENTRAR ?? -- LINEA 77
-# TODO: Desde paso 3, P2 y P3 no están limpiando su cola de mensajes

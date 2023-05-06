@@ -35,13 +35,16 @@ class proceso:
   # Función que permite hacer el 1.3 del ejercicio donde cambiamos el valor del proceso
   # a Held.
   def puede_entrar(self):
+    pivote = self.grupo_votacion.pop(0)
     for process in self.grupo_votacion:
-      if process.estado == "Released":
+      if process.votacion == "True" and len(process.msg) == 0:
         continue
       else:
+        self.regresa_pivote(pivote)
         return False
     self.estado = "Held"
     self.msg.clear()
+    self.regresa_pivote(pivote)
     return True
 
   def recibe_mensaje(self, mensaje):
@@ -60,7 +63,7 @@ class proceso:
     return nombres
 
   def __str__(self):
-    return f'Nombre = {self._nombre}, Estado = {self.estado}, Cola de mensajes = {self.msg}, Votacion = {self.votacion}'
+    return f'| Nombre = {self._nombre} | Estado = {self.estado} | Cola de mensajes = {self.msg} | Votacion = {self.votacion} |'
 
 '''
 Otra implementacion es que para no llamar a tantas funciones para cambiar el estado del proceso
