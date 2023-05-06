@@ -3,8 +3,9 @@ from proceso import proceso
 def main():
   #Conjuntos de votación
   print("\nExamen Parcial: Algoritmos de exlusión mutua\n")
-  decision = int(input("Elije una opción: \n1. Para 4 procesos \n2. Para 3 procesos \n3. Para mejora de Sanders \n4. Salir"))
+  decision = 0
   while(decision != 4):
+    decision = int(input("\nElije una opción: \n1. Para 4 procesos \n2. Para 3 procesos \n3. Para mejora de Sanders \n4. Salir\nR = "))
     if decision == 1:
       cuatro_procesos()
     elif decision == 2:
@@ -12,7 +13,7 @@ def main():
     elif decision == 3:
       sanders()
     else:
-      print("Decisión no válida")
+      print("Decisión no válida\n")
   return
 
 ###################################################################################################################################
@@ -168,8 +169,49 @@ def tres_procesos():
   p2.agrega_grupo_votacion(v2)
   p3.agrega_grupo_votacion(v3)
 
-  
+  # 1 -> Proceso 1 quiere entrar a la seccion critica
+  # 2 -> Proceso 2 quiere entrar a la seccion critica
+  # 3 -> Proceso 3 quiere entrar a la seccion critica
+
+  print("El paso 1 es: Proceso 1 quiere entrar a la sección crítica")
+  print("El paso 2 es: Proceso 2 quiere entrar a la sección crítica")
+  print("El paso 3 es: Proceso 3 quiere entrar a la sección crítica")
+
+  print("================================================== ESTADO INICIAL ======================================================")
+  print("Todos los procesos están en estado Released, sus colas de mensajes están vacías y votación en False")
+  print(p1)
+  print(p2)
+  print(p3)
+
+  print("\n================================================== PASO 1 ==================================================")
+  print("---------------------------------------- P1 QUIERE ENTRAR -------------------------------------")
+  print("P1 manda mensaje a todos en su grupo de votación (P2) de que quiere entrar, cambia su estado a Wanted y su votación a True")
+  envia_mensaje_quiero_entrar(p1)
+  envia_mensaje_quiero_entrar(p2)
+  envia_mensaje_quiero_entrar(p3)
+  print(p1)
+  print(p2)
+  print(p3)
+
+  print("\n---------------------------------------- P1 RECIBE RESPUESTA -------------------------------------")
+  print("P2 contesta a P1 y cambia su votación a True")
+  envian_respuesta(p1)
+  envian_respuesta(p2)
+  envian_respuesta(p3)
+  print(p1)
+  print(p2)
+  print(p3)
+
+  print("\n---------------------------------------- ¿¿ P1 PUEDE ENTRAR ?? -------------------------------------")
+  print("Si P1 recibió mensaje de todos los de su grupo de votación, entonces cambia su estado a Held")
+  p1.puede_entrar()
+  p2.puede_entrar()
+  p3.puede_entrar()
+  print(p1)
+  print(p2)
+  print(p3)
   return
+ 
 
 ###################################################################################################################################
 ###################################################################################################################################
