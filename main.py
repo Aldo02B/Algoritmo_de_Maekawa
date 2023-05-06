@@ -1,15 +1,31 @@
 from proceso import proceso
 
 def main():
-  # LOL
   #Conjuntos de votación
-  print("\nAlgoritmo de Maekawa\n")
-  print("Se crean los procesos: P1, P2, P3 y P4")
+  print("\nExamen Parcial: Algoritmos de exlusión mutua\n")
+  decision = int(input("Elije una opción: \n1. Para 4 procesos \n2. Para 3 procesos \n3. Para mejora de Sanders \n4. Salir"))
+  while(decision != 4):
+    if decision == 1:
+      cuatro_procesos()
+    elif decision == 2:
+      tres_procesos()
+    elif decision == 3:
+      sanders()
+    else:
+      print("Decisión no válida")
+  return
+
+###################################################################################################################################
+###################################################################################################################################
+
+def cuatro_procesos():
+  print("\nAlgoritmo de Maekawa con 4 procesos\n")
+  print("Se crean los procesos: P1, P2, P3 y P4\n")
   p1 = proceso("p1")
   p2 = proceso("p2")
   p3 = proceso("p3")
   p4 = proceso("p4")
-  
+
   print("Se crean los grupos de votación\n")
   v1=[p1, p2, p3]
   print("El grupo 1 está constituido de los procesos: P1, P2 y P3")
@@ -102,7 +118,7 @@ def main():
   print(p2)
   print(p3)
   print(p4)
-  
+
   print("\n---------------------------------------- P3 RECIBE RESPUESTA  ----------------------------------------")
   print("P1 y P4 mandan respuesta a P3, cambiando su votación a True y vaciando su cola de mensajes")
   envian_respuesta(p3)
@@ -118,7 +134,7 @@ def main():
   print(p2)
   print(p3)
   print(p4)
-  
+
   print("\n======================================================= PASO 4 ======================================================")
   print("\n----------------------------------- P3 ENVÍA MENSAJE DE SALIDA -------------------------------------")
   print("P3 salió de la sección crítica, cambia su estado a Released y votación a False")
@@ -129,8 +145,41 @@ def main():
   print(p2)
   print(p3)
   print(p4)
-
   return
+
+###################################################################################################################################
+###################################################################################################################################
+
+def tres_procesos():
+  print("Algoritmo de Maekawa con 3 procesos, bloqueo indefinido")
+  p1 = proceso("p1")
+  p2 = proceso("p2")
+  p3 = proceso("p3")
+
+  print("Se crean los grupos de votación\n")
+  v1=[p1, p2]
+  print("El grupo 1 está constituido de los procesos: P1 y P2")
+  v2=[p2, p3]
+  print("El grupo 2 está constituido de los procesos: P2 y P3")
+  v3=[p3, p1]
+  print("El grupo 3 está constituido de los procesos: P3 y P1")
+
+  p1.agrega_grupo_votacion(v1)
+  p2.agrega_grupo_votacion(v2)
+  p3.agrega_grupo_votacion(v3)
+
+  
+  return
+
+###################################################################################################################################
+###################################################################################################################################
+
+def sanders():
+  print("Algoritmo de Maekawa con la mejora de Sanders")
+  return
+
+###################################################################################################################################
+###################################################################################################################################
 
 # Proceso que quiere entrar, envia mensaje a todos los de 
 # su grupo, cambia su estado a Wanted. Es el paso 1.1, 2.1
@@ -140,7 +189,6 @@ def envia_mensaje_quiero_entrar(proceso):
     # Manda a su grupo de votacion un mensaje
     for process in proceso.grupo_votacion:
       process.recibe_mensaje(proceso.nombre)
-    
     proceso.saca_primer_mensaje()
 
 # Los que no son pivote, sólo si votación es False 
